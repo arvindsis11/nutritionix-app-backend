@@ -22,6 +22,7 @@ import com.nutritionix.whishlist.model.WhishList;
 import com.nutritionix.whishlist.service.WhishListService;
 
 import feign.FeignException;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
 @RestController
@@ -35,6 +36,7 @@ public class WhishListController {
 	AuthClient authClient;
 
 	@GetMapping("/getByUserId/{userId}")
+	@Operation(summary = "get whishlist by userId")
 	public ResponseEntity<?> getWhishlistByUserId(@PathVariable String userId,
 			@Parameter(hidden = true) @RequestHeader("Authorization") String token) {
 		try {
@@ -50,6 +52,7 @@ public class WhishListController {
 	}
 
 	@PostMapping("/addItem")
+	@Operation(summary = "add item to the whishlist")
 	public ResponseEntity<?> addStockToWhishlist(@RequestBody WhishList whishlist,
 			@Parameter(hidden = true) @RequestHeader("Authorization") String token) {
 		try {
@@ -68,6 +71,7 @@ public class WhishListController {
 	}
 
 	@DeleteMapping("/delete/{id}")
+	@Operation(summary = "delete items from the whishlist")
 	public ResponseEntity<?> deleteFromWhishList(@PathVariable Long id,
 			@Parameter(hidden = true) @RequestHeader("Authorization") String token) {
 		try {
