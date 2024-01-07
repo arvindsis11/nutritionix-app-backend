@@ -30,7 +30,7 @@ public class UserProfileController {
 		this.jsonKafkaProducer = jsonKafkaProducer;
 	}
 
-	@GetMapping
+	@GetMapping("/getAll")
 	public ResponseEntity<Object> getAllUsers() {
 		return new ResponseEntity<>(usersProfileService.getAllUsers(), HttpStatus.OK);
 	}
