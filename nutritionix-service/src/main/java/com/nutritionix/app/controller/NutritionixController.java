@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nutritionix.app.service.NutritionixService;
@@ -24,9 +25,16 @@ public class NutritionixController {
 	
 	@GetMapping("/foodItem/{query}")
 	@Operation(summary = "get common food items by name")
-	public ResponseEntity<?> getStocksByCountry(@PathVariable String query){
+	public ResponseEntity<?> getCommonFoodItems(@PathVariable String query){
 		
 		return nutritionixService.getCommonFoodItems(query);	
+	}
+	
+	@GetMapping("/getNutrients")
+	@Operation(summary = "get common food nutrients by name")
+	public ResponseEntity<?> getFoodNutritions(@RequestParam String foodName){
+		
+		return nutritionixService.getFoodNutritions(foodName);	
 	}
 	
 	

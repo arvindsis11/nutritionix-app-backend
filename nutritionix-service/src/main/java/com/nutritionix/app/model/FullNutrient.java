@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Photo {
-	private String thumb;
-	private String highres;
+public class FullNutrient {
+	private int attr_id;
+	private double value;
 }
