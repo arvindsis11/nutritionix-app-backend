@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "spring.sleuth.reactor.instrumentation-type",
+  "type": "java.lang.String",
+  "description": "A description for 'spring.sleuth.reactor.instrumentation-type'"
+}]}
