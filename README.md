@@ -51,7 +51,7 @@ MySQL databases are used for persistent data storage, ensuring reliability and d
 1. **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/your-username/stock-listing-app.git
+    git clone https://github.com/arvindsis11/stock-listing-app.git
     ```
 
 2. **Build and Run Microservices:**
