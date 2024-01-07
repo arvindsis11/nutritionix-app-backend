@@ -1,4 +1,4 @@
-# Stock Listing Application
+# Nutritionix Application
 
 Welcome to the Nutritionix Application - a microservices-based architecture designed to provide a scalable and robust solution for managing user profiles, authentication, common food item listing and showing nutritions, and wishlisting.
 
