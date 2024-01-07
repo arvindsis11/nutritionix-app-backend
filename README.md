@@ -26,7 +26,7 @@ Authentication Service acts as a Kafka consumer, consuming user registration dat
 
 ### 6. Nutritionix Service
 
-Stocklisting Service fetches stock information from a third-party API (such as https://developer.nutritionix.com/) based on food names. It provides food nutrition data, ensuring users have access to the food nutirition information.
+Nutritionix Service fetches nutrition information from a third-party API (such as https://developer.nutritionix.com/) based on food names. It provides food nutrition data, ensuring users have access to the food nutirition information.
 
 ### 7. Wishlist Service
 
