@@ -20,11 +20,11 @@ public class WhishList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Schema(hidden = true)
 	private Long id;
-	private String food_name;
-	private String serving_unit;
-	private String tag_name;
-	private int serving_qty;
-	private String tag_id;
+	private String foodName;
+	private String servingUnit;
+	private String tagName;
+	private int servingQty;
+	private String tagId;
 	private String photo;
 	private String locale;
 	@Schema(hidden = true)

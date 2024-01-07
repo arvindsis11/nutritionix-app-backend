@@ -1,29 +1,49 @@
 package com.nutritionix.whishlist.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.nutritionix.whishlist.exception.ResourceAlreadyExistsException;
+import com.nutritionix.whishlist.exception.ResourceNotFoundException;
 import com.nutritionix.whishlist.model.WhishList;
+import com.nutritionix.whishlist.repo.WhishListRepo;
 
 @Service
-public class WhishListServiceImpl implements WhishListService{
+public class WhishListServiceImpl implements WhishListService {
+
+	@Autowired
+	WhishListRepo whishListRepo;
 
 	@Override
 	public ResponseEntity<?> getWhishlistByUserId(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<WhishList> whishlist = whishListRepo.findByUserId(userId);
+		if (whishlist.isEmpty()) {
+			throw new ResourceNotFoundException("item with given id not found");
+		}
+		return new ResponseEntity<>(whishlist, HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<?> addFoodItemToWhishlist(WhishList whishlist) {
-		// TODO Auto-generated method stub
-		return null;
+		if (whishListRepo.existsByTagId(whishlist.getTagId())) {
+			throw new ResourceAlreadyExistsException("item in whishlist already exists");
+		}
+		return new ResponseEntity<>(whishListRepo.save(whishlist), HttpStatus.CREATED);
 	}
 
 	@Override
 	public ResponseEntity<?> deleteFromWhishList(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<WhishList> whishlist = whishListRepo.findById(id);
+		if (whishlist.isEmpty()) {
+			throw new ResourceNotFoundException("item with given id not found");
+		}
+		whishListRepo.deleteById(id);
+		return new ResponseEntity<>("item deleted successfully", HttpStatus.OK);
 	}
 
 }

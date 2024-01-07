@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 import com.nutritionix.whishlist.model.WhishList;
 
 @Repository
-public interface WhishListRepo extends JpaRepository<WhishList, Long>{
-	
+public interface WhishListRepo extends JpaRepository<WhishList, Long> {
+
 	List<WhishList> findByUserId(String userId);
-	
-//	Optional<WhishList> findBySymbol(String symbol);
-//	
-//	boolean existsBySymbol(String symbol);
+
+	Optional<WhishList> findByTagId(String tagId);
+
+	boolean existsByTagId(String tagId);
 }
