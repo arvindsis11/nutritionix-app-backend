@@ -12,6 +12,10 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @Configuration
 public class OpenApiConfig {
 	@Bean
+    public CustomCacheEventLogger customCacheEventLogger() {
+        return new CustomCacheEventLogger();
+    }
+	@Bean
 	OpenAPI customOpenAPI() {
 		return new OpenAPI()
 				.components(new Components().addSecuritySchemes("bearer-token",

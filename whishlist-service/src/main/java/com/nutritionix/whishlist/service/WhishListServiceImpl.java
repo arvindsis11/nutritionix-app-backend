@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,13 @@ public class WhishListServiceImpl implements WhishListService {
 	WhishListRepo whishListRepo;
 
 	@Override
-	public ResponseEntity<?> getWhishlistByUserId(String userId) {
+	@Cacheable(value = "whishlistCache", key = "#userId")
+	public List<WhishList> getWhishlistByUserId(String userId) {
 		List<WhishList> whishlist = whishListRepo.findByUserId(userId);
 		if (whishlist.isEmpty()) {
 			throw new ResourceNotFoundException("item with given id not found");
 		}
-		return new ResponseEntity<>(whishlist, HttpStatus.OK);
+		return whishlist;
 	}
 
 	@Override
