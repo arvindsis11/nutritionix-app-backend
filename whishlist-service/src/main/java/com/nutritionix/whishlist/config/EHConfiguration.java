@@ -34,7 +34,7 @@ public class EHConfiguration {
 		CacheConfiguration<String, List> configuration = CacheConfigurationBuilder
 				.newCacheConfigurationBuilder(String.class, List.class,
 						ResourcePoolsBuilder.heap(100).offheap(10, MemoryUnit.MB))
-				.withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(50))).add(asynchronousListener)
+				.withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(20))).add(asynchronousListener)
 				.build();
 
 		javax.cache.configuration.Configuration<String, List> cacheConfiguration = Eh107Configuration
