@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,7 @@ public class WhishListServiceImpl implements WhishListService {
 	}
 
 	@Override
+	@CacheEvict(value = "whishlistCache", key = "#userId")
 	public ResponseEntity<?> deleteFromWhishList(Long id) {
 		Optional<WhishList> whishlist = whishListRepo.findById(id);
 		if (whishlist.isEmpty()) {

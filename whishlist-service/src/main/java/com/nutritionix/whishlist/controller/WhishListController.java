@@ -53,7 +53,7 @@ public class WhishListController {
 
 	@PostMapping("/addItem")
 	@Operation(summary = "add item to the whishlist")
-	public ResponseEntity<?> addStockToWhishlist(@RequestBody WhishList whishlist,
+	public ResponseEntity<?> addFoodToWhishlist(@RequestBody WhishList whishlist,
 			@Parameter(hidden = true) @RequestHeader("Authorization") String token) {
 		try {
 			Map<String, String> userInfo = (Map<String, String>) authClient.validateToken(token).getBody();
