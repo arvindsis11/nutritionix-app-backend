@@ -65,15 +65,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 	public UserProfileDto updateUserProfile(UserProfileDto userProfileDto, long id) {
 		UserProfile entity = usersProfileRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("UserProfile not found with ID: " + id));
-
 		entity.setEmail(userProfileDto.getEmail());
-		entity.setFirstName(userProfileDto.getFirstName());
-		entity.setLastName(userProfileDto.getLastName());
-		entity.setNumber(userProfileDto.getNumber());
-		entity.setDateOfBirth(userProfileDto.getDateOfBirth());
-
 		usersProfileRepository.save(entity);
-
 		return modelMapper.map(entity, UserProfileDto.class);
 	}
 

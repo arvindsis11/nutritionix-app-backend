@@ -41,7 +41,7 @@ public class WhishListServiceImpl implements WhishListService {
 	}
 
 	@Override
-	@CacheEvict(value = "whishlistCache", key = "#userId")
+	@CacheEvict(value = "whishlistCache", key = "#id")
 	public ResponseEntity<?> deleteFromWhishList(Long id) {
 		Optional<WhishList> whishlist = whishListRepo.findById(id);
 		if (whishlist.isEmpty()) {

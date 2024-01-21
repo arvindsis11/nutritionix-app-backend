@@ -139,13 +139,8 @@ class UserProfileControllerTest {
                 .thenReturn(new UserProfileDto());
 
         UserProfileDto userProfileDto = new UserProfileDto();
-        userProfileDto
-                .setDateOfBirth(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-        userProfileDto.setEmail("jane.doe@example.org");
-        userProfileDto.setFirstName("Jane");
+
         userProfileDto.setId(1L);
-        userProfileDto.setLastName("Doe");
-        userProfileDto.setNumber(1L);
         userProfileDto.setRoles(new HashSet<>());
         userProfileDto.setSecurityAnswer("Security Answer");
         userProfileDto.setSecurityQuestion("Security Question");
