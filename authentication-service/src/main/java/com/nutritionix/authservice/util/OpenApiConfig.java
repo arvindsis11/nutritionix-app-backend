@@ -19,7 +19,7 @@ public class OpenApiConfig {
 						new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
 								.name("Authorization")))
 				.info(new Info().title("AUTHORIZATION-MICROSERVICE")
-						.description("@author:github/arvindsis11 auth for stock app").version("1.0.0"))
+						.description("@author:github/akshu auth for Nutritionix app").version("1.0.0"))
 				.addSecurityItem(new SecurityRequirement().addList("bearer-token"));
 	}
 
