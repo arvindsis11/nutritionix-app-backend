@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 @CrossOrigin("*")
 public class NutritionixController {
 
+	//added exception handling
 	private final NutritionixService nutritionixService;
 
 	private final AuthClient authClient;
