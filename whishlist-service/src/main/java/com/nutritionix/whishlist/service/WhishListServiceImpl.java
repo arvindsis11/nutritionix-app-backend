@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,9 @@ import com.nutritionix.whishlist.exception.ResourceAlreadyExistsException;
 import com.nutritionix.whishlist.exception.ResourceNotFoundException;
 import com.nutritionix.whishlist.model.WhishList;
 import com.nutritionix.whishlist.repo.WhishListRepo;
+import com.nutritionix.whishlist.response.FallbackResponse;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Service
 public class WhishListServiceImpl implements WhishListService {
@@ -33,6 +35,7 @@ public class WhishListServiceImpl implements WhishListService {
 	}
 
 	@Override
+	@CircuitBreaker(name = "WHISHLIST-SERVICE", fallbackMethod = "getFallbackResponse")
 	public ResponseEntity<?> addFoodItemToWhishlist(WhishList whishlist) {
 		if (whishListRepo.existsByTagId(whishlist.getTagId())) {
 			throw new ResourceAlreadyExistsException("item in whishlist already exists");
@@ -49,6 +52,12 @@ public class WhishListServiceImpl implements WhishListService {
 		}
 		whishListRepo.deleteById(id);
 		return new ResponseEntity<>("item deleted successfully", HttpStatus.OK);
+	}
+	
+	public ResponseEntity<?> getFallbackResponse(WhishList whishlist,Exception e) {//minor fix
+		FallbackResponse response = new FallbackResponse("Whishlist API is currently unavailable", e.getMessage());
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(response);
 	}
 
 }

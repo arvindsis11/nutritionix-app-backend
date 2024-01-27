@@ -13,7 +13,10 @@ import org.springframework.web.client.RestTemplate;
 
 import com.nutritionix.app.model.FullNutritionResponse;
 import com.nutritionix.app.model.NutritionixApiResponse;
+import com.nutritionix.app.response.FallbackResponse;
 import com.nutritionix.app.service.NutritionixService;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Service
 public class NutritionixServiceImpl implements NutritionixService {
@@ -35,8 +38,9 @@ public class NutritionixServiceImpl implements NutritionixService {
 	}
 
 	@Override
+	@CircuitBreaker(name = "NUTRITION-SERVICE", fallbackMethod = "getFallbackResponse")
 	public ResponseEntity<?> getCommonFoodItems(String query) {
-		String url = apiUrl + "/search/instant/?query=" + query;
+		String url = apiUrl + "/search/instant/?query=" + query;//change something here to see circuit breaker
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -52,6 +56,7 @@ public class NutritionixServiceImpl implements NutritionixService {
 	}
 
 	@Override
+	@CircuitBreaker(name = "NUTRITION-SERVICE", fallbackMethod = "getFallbackResponse")
 	public ResponseEntity<?> getFoodNutritions(String foodName) {
 		String url = apiUrl + "/natural/nutrients";
 
@@ -69,6 +74,12 @@ public class NutritionixServiceImpl implements NutritionixService {
 				requestEntity, FullNutritionResponse.class);
 
 		return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+	}
+	
+	public ResponseEntity<?> getFallbackResponse(String msg,Exception e) {
+		FallbackResponse response = new FallbackResponse("The Nutritionix API is currently unavailable", e.getMessage());
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(response);
 	}
 
 }

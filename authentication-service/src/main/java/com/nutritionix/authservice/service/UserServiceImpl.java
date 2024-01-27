@@ -19,7 +19,10 @@ import com.nutritionix.authservice.model.Role;
 import com.nutritionix.authservice.model.User;
 import com.nutritionix.authservice.repo.RoleRepository;
 import com.nutritionix.authservice.repo.UserRepository;
+import com.nutritionix.authservice.response.FallbackResponse;
 import com.stock.userprofile.model.UserProfile;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -128,6 +131,7 @@ public class UserServiceImpl implements UserService {
 
 	//user registeration using kafka
 	@Override
+	@CircuitBreaker(name = "AUTHENTICATION-SERVICE", fallbackMethod = "getFallbackResponse")
 	public ResponseEntity<?> registerUser(UserProfile userProfileDto) {
 		if (userRepository.existsByUsername(userProfileDto.getUsername())
 				|| userRepository.existsByEmail(userProfileDto.getEmail())) {
@@ -164,6 +168,12 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 		mapObj.put("msg", "User registered successfully");
 		return new ResponseEntity<>(mapObj, HttpStatus.OK);
+	}
+	
+	public ResponseEntity<?> getFallbackResponse(UserProfile userProfileDto,Exception e) {
+		FallbackResponse response = new FallbackResponse("Kafka service is unavailable", e.getMessage());
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(response);
 	}
 
 }

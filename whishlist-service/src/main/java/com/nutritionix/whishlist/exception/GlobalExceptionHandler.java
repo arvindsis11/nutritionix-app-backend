@@ -33,5 +33,12 @@ public class GlobalExceptionHandler {
 		return new ErrorResponseDTO(new Date(), HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT.getReasonPhrase(),
 				exception.getMessage(), request.getRequestURI());
 	}
+	
+	@ResponseStatus(code = HttpStatus.CONFLICT)
+	@ExceptionHandler({ ExternalServiceException.class })
+	public ErrorResponseDTO ExternalServiceException(Exception exception, HttpServletRequest request) {
+		return new ErrorResponseDTO(new Date(), HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT.getReasonPhrase(),
+				exception.getMessage(), request.getRequestURI());
+	}
 
 }
