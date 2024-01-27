@@ -8,7 +8,7 @@ import com.nutritionix.authservice.dto.LoginDto;
 import com.nutritionix.authservice.dto.ResetDto;
 import com.nutritionix.authservice.dto.SignupDto;
 import com.nutritionix.authservice.model.User;
-import com.stock.userprofile.model.UserProfile;
+import com.nutritionix.userprofile.model.UserProfile;
 
 public interface UserService {
 

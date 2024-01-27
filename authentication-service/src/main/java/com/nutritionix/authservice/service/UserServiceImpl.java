@@ -20,7 +20,7 @@ import com.nutritionix.authservice.model.User;
 import com.nutritionix.authservice.repo.RoleRepository;
 import com.nutritionix.authservice.repo.UserRepository;
 import com.nutritionix.authservice.response.FallbackResponse;
-import com.stock.userprofile.model.UserProfile;
+import com.nutritionix.userprofile.model.UserProfile;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 

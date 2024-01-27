@@ -7,7 +7,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import com.nutritionix.authservice.service.UserService;
-import com.stock.userprofile.model.UserProfile;
+import com.nutritionix.userprofile.model.UserProfile;
 
 @Service
 public class JsonKafkaConsumer {

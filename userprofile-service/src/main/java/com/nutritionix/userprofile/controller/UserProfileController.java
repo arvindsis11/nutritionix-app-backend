@@ -43,7 +43,7 @@ public class UserProfileController {
 	@PostMapping("/add")
 	public ResponseEntity<Object> saveUserProfile(@RequestBody UserProfile userProfile) {
 		//sending registeration data to authentication server using kafka --comment me if kafka gives issues
-		jsonKafkaProducer.sendMessage(userProfile);
+//		jsonKafkaProducer.sendMessage(userProfile);
 		return new ResponseEntity<>(usersProfileService.saveUserProfile(userProfile), HttpStatus.OK);
 	}
 

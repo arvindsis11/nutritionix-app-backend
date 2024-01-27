@@ -1,4 +1,4 @@
-package com.stock.userprofile.model;
+package com.nutritionix.userprofile.model;
 
 import java.util.Date;
 import java.util.Set;
