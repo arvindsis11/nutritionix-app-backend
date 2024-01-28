@@ -32,10 +32,6 @@ class WhishListControllerTest {
     @MockBean
     private WhishListService whishListService;
 
-    /**
-     * Method under test:
-     * {@link WhishListController#addFoodToWhishlist(WhishList, String)}
-     */
     @Test
     void testAddFoodToWhishlist() throws Exception {
         Mockito.<ResponseEntity<?>>when(authClient.validateToken(Mockito.<String>any()))
@@ -64,10 +60,6 @@ class WhishListControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().is(415));
     }
 
-    /**
-     * Method under test:
-     * {@link WhishListController#deleteFromWhishList(Long, String)}
-     */
     @Test
     void testDeleteFromWhishList() throws Exception {
         Mockito.<ResponseEntity<?>>when(authClient.validateToken(Mockito.<String>any()))

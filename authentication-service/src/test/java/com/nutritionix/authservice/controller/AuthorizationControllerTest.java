@@ -65,8 +65,8 @@ class AuthorizationControllerTest {
 	@Test
 	void testLoginUser() throws Exception {
 
-		LoginDto loginObj = new LoginDto("admin", "arvind@123");
-		User userObj = new User("admin", "test@gmail.com", "arvind@123", "pet", "testpet");
+		LoginDto loginObj = new LoginDto("admin", "akshada@123");
+		User userObj = new User("admin", "test@gmail.com", "akshada@123", "pet", "testpet");
 		when(userService.getUserByUsername(anyString())).thenReturn(Optional.of(userObj));
 		when(jwtTokenUtil.generatToken(loginObj)).thenReturn("testToken");
 
