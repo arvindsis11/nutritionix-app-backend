@@ -1,11 +1,9 @@
 package com.nutritionix.userprofile.controller;
 
 import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nutritionix.userprofile.controller.UserProfileController;
 import com.nutritionix.userprofile.dto.UserProfileDto;
 import com.nutritionix.userprofile.kafka.JsonKafkaProducer;
 import com.nutritionix.userprofile.model.UserProfile;
@@ -34,7 +32,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @ContextConfiguration(classes = {UserProfileController.class})
 @ExtendWith(SpringExtension.class)
 class UserProfileControllerTest {
-
     @MockBean
     private JsonKafkaProducer jsonKafkaProducer;
 
@@ -50,7 +47,7 @@ class UserProfileControllerTest {
     @Test
     void testGetAllUsers() throws Exception {
         when(userProfileService.getAllUsers()).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1.0/userProfile");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1.0/userProfile/getAll");
         MockMvcBuilders.standaloneSetup(userProfileController)
                 .build()
                 .perform(requestBuilder)
@@ -73,25 +70,7 @@ class UserProfileControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content()
                         .string(
-                                "{\"id\":0,\"username\":null,\"email\":null,\"firstName\":null,\"lastName\":null,\"number\":0,\"dateOfBirth\":null,"
-                                        + "\"roles\":null,\"securityQuestion\":null,\"securityAnswer\":null}"));
-    }
-
-    /**
-     * Method under test: {@link UserProfileController#getUserProfileById(long)}
-     */
-    @Test
-    void testGetUserProfileById2() throws Exception {
-        when(userProfileService.getAllUsers()).thenReturn(new ArrayList<>());
-        when(userProfileService.getUserProfileById(anyLong())).thenReturn(new UserProfileDto());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1.0/userProfile/{id}", "",
-                "Uri Variables");
-        MockMvcBuilders.standaloneSetup(userProfileController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content().string("[]"));
+                                "{\"id\":0,\"username\":null,\"email\":null,\"roles\":null,\"securityQuestion\":null,\"securityAnswer\":null}"));
     }
 
     /**
@@ -100,7 +79,6 @@ class UserProfileControllerTest {
     @Test
     void testSaveUserProfile() throws Exception {
         when(userProfileService.saveUserProfile(Mockito.<UserProfile>any())).thenReturn(new UserProfileDto());
-        doNothing().when(jsonKafkaProducer).sendMessage(Mockito.<UserProfile>any());
 
         UserProfile userProfile = new UserProfile();
         userProfile.setDateOfBirth(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
@@ -125,8 +103,7 @@ class UserProfileControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content()
                         .string(
-                                "{\"id\":0,\"username\":null,\"email\":null,\"firstName\":null,\"lastName\":null,\"number\":0,\"dateOfBirth\":null,"
-                                        + "\"roles\":null,\"securityQuestion\":null,\"securityAnswer\":null}"));
+                                "{\"id\":0,\"username\":null,\"email\":null,\"roles\":null,\"securityQuestion\":null,\"securityAnswer\":null}"));
     }
 
     /**
@@ -139,7 +116,7 @@ class UserProfileControllerTest {
                 .thenReturn(new UserProfileDto());
 
         UserProfileDto userProfileDto = new UserProfileDto();
-
+        userProfileDto.setEmail("jane.doe@example.org");
         userProfileDto.setId(1L);
         userProfileDto.setRoles(new HashSet<>());
         userProfileDto.setSecurityAnswer("Security Answer");
@@ -156,8 +133,7 @@ class UserProfileControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content()
                         .string(
-                                "{\"id\":0,\"username\":null,\"email\":null,\"firstName\":null,\"lastName\":null,\"number\":0,\"dateOfBirth\":null,"
-                                        + "\"roles\":null,\"securityQuestion\":null,\"securityAnswer\":null}"));
+                                "{\"id\":0,\"username\":null,\"email\":null,\"roles\":null,\"securityQuestion\":null,\"securityAnswer\":null}"));
     }
 
     /**
