@@ -12,5 +12,5 @@ public interface WhishListService {
 
 	public ResponseEntity<?> addFoodItemToWhishlist(WhishList whishlist);
 
-	public ResponseEntity<?> deleteFromWhishList(Long id);
+	public ResponseEntity<?> deleteFromWhishList(Long id,String userId);
 }

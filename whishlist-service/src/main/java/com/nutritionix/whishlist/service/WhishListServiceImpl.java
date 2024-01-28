@@ -1,6 +1,8 @@
 package com.nutritionix.whishlist.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +30,6 @@ public class WhishListServiceImpl implements WhishListService {
 	@Cacheable(value = "whishlistCache", key = "#userId")
 	public List<WhishList> getWhishlistByUserId(String userId) {
 		List<WhishList> whishlist = whishListRepo.findByUserId(userId);
-		if (whishlist.isEmpty()) {
-			throw new ResourceNotFoundException("item with given id not found");
-		}
 		return whishlist;
 	}
 
@@ -44,8 +43,8 @@ public class WhishListServiceImpl implements WhishListService {
 	}
 
 	@Override
-	@CacheEvict(value = "whishlistCache", key = "#id")
-	public ResponseEntity<?> deleteFromWhishList(Long id) {
+	@CacheEvict(value = "whishlistCache", key = "#userId")
+	public ResponseEntity<?> deleteFromWhishList(Long id,String userId) {
 		Optional<WhishList> whishlist = whishListRepo.findById(id);
 		if (whishlist.isEmpty()) {
 			throw new ResourceNotFoundException("item with given id not found");

@@ -182,7 +182,7 @@ class WhishListServiceImplTest {
         Optional<WhishList> ofResult = Optional.of(whishList);
         doNothing().when(whishListRepo).deleteById(Mockito.<Long>any());
         when(whishListRepo.findById(Mockito.<Long>any())).thenReturn(ofResult);
-        ResponseEntity<?> actualDeleteFromWhishListResult = whishListServiceImpl.deleteFromWhishList(1L);
+        ResponseEntity<?> actualDeleteFromWhishListResult = whishListServiceImpl.deleteFromWhishList(1L,"john");
         verify(whishListRepo).deleteById(Mockito.<Long>any());
         verify(whishListRepo).findById(Mockito.<Long>any());
         assertEquals("item deleted successfully", actualDeleteFromWhishListResult.getBody());
@@ -208,7 +208,7 @@ class WhishListServiceImplTest {
         Optional<WhishList> ofResult = Optional.of(whishList);
         doThrow(new ResourceNotFoundException("An error occurred")).when(whishListRepo).deleteById(Mockito.<Long>any());
         when(whishListRepo.findById(Mockito.<Long>any())).thenReturn(ofResult);
-        assertThrows(ResourceNotFoundException.class, () -> whishListServiceImpl.deleteFromWhishList(1L));
+        assertThrows(ResourceNotFoundException.class, () -> whishListServiceImpl.deleteFromWhishList(1L,"john"));
         verify(whishListRepo).deleteById(Mockito.<Long>any());
         verify(whishListRepo).findById(Mockito.<Long>any());
     }
@@ -220,7 +220,7 @@ class WhishListServiceImplTest {
     void testDeleteFromWhishList3() {
         Optional<WhishList> emptyResult = Optional.empty();
         when(whishListRepo.findById(Mockito.<Long>any())).thenReturn(emptyResult);
-        assertThrows(ResourceNotFoundException.class, () -> whishListServiceImpl.deleteFromWhishList(1L));
+        assertThrows(ResourceNotFoundException.class, () -> whishListServiceImpl.deleteFromWhishList(1L,"john"));
         verify(whishListRepo).findById(Mockito.<Long>any());
     }
 }

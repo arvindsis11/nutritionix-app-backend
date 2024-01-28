@@ -77,7 +77,8 @@ public class WhishListController {
 		try {
 			Map<String, String> userInfo = (Map<String, String>) authClient.validateToken(token).getBody();
 			if (userInfo.containsValue("ROLE_ADMIN") || userInfo.containsValue("ROLE_CUSTOMER")) {
-				return new ResponseEntity<>(whishListService.deleteFromWhishList(id), HttpStatus.OK);
+				String userId = userInfo.keySet().iterator().next();
+				return new ResponseEntity<>(whishListService.deleteFromWhishList(id,userId), HttpStatus.OK);
 			} else {
 				throw new InvalidCredentialsException("Access Denied");
 			}
