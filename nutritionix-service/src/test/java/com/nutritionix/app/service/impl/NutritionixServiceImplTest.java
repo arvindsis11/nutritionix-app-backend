@@ -33,9 +33,6 @@ class NutritionixServiceImplTest {
     @MockBean
     private RestTemplate restTemplate;
 
-    /**
-     * Method under test: {@link NutritionixServiceImpl#getCommonFoodItems(String)}
-     */
     @Test
     void testGetCommonFoodItems() throws RestClientException {
         ResponseEntity<Object> responseEntity = mock(ResponseEntity.class);
@@ -51,9 +48,6 @@ class NutritionixServiceImplTest {
         assertTrue(actualCommonFoodItems.getHeaders().isEmpty());
     }
 
-    /**
-     * Method under test: {@link NutritionixServiceImpl#getFoodNutritions(String)}
-     */
     @Test
     void testGetFoodNutritions() throws RestClientException {
         ResponseEntity<Object> responseEntity = mock(ResponseEntity.class);
@@ -69,10 +63,6 @@ class NutritionixServiceImplTest {
         assertTrue(actualFoodNutritions.getHeaders().isEmpty());
     }
 
-    /**
-     * Method under test:
-     * {@link NutritionixServiceImpl#getFallbackResponse(String, Exception)}
-     */
     @Test
     void testGetFallbackResponse() {
         ResponseEntity<?> actualFallbackResponse = nutritionixServiceImpl.getFallbackResponse("Msg", new Exception("foo"));
