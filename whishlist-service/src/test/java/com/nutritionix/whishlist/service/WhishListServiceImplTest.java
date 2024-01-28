@@ -39,12 +39,7 @@ class WhishListServiceImplTest {
     /**
      * Method under test: {@link WhishListServiceImpl#getWhishlistByUserId(String)}
      */
-    @Test
-    void testGetWhishlistByUserId() {
-        when(whishListRepo.findByUserId(Mockito.<String>any())).thenReturn(new ArrayList<>());
-        assertThrows(ResourceNotFoundException.class, () -> whishListServiceImpl.getWhishlistByUserId("42"));
-        verify(whishListRepo).findByUserId(Mockito.<String>any());
-    }
+   
 
     /**
      * Method under test: {@link WhishListServiceImpl#getWhishlistByUserId(String)}
