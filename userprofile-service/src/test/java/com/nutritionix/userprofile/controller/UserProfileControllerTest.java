@@ -81,12 +81,10 @@ class UserProfileControllerTest {
         when(userProfileService.saveUserProfile(Mockito.<UserProfile>any())).thenReturn(new UserProfileDto());
 
         UserProfile userProfile = new UserProfile();
-        userProfile.setDateOfBirth(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
         userProfile.setEmail("jane.doe@example.org");
-        userProfile.setFirstName("Jane");
+     
         userProfile.setId(1L);
-        userProfile.setLastName("Doe");
-        userProfile.setNumber(1L);
+      
         userProfile.setPassword("iloveyou");
         userProfile.setRoles(new HashSet<>());
         userProfile.setSecurityAnswer("Security Answer");

@@ -1,6 +1,5 @@
 package com.nutritionix.userprofile.model;
 
-import java.util.Date;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
@@ -23,14 +22,10 @@ import lombok.ToString;
 @Table(name = "user_profile")
 public class UserProfile {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	private String username;
-	private String firstName;
-	private String lastName;
-	private long number;
-	private Date dateOfBirth;
 	private String email;
 
 	private Set<String> roles;
