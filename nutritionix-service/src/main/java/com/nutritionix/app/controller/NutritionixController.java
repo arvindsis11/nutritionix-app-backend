@@ -2,6 +2,8 @@ package com.nutritionix.app.controller;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,8 @@ public class NutritionixController {
 	private final NutritionixService nutritionixService;
 
 	private final AuthClient authClient;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(NutritionixController.class);
 
 	public NutritionixController(NutritionixService nutritionixService, AuthClient authClient) {
 		this.nutritionixService = nutritionixService;
@@ -42,11 +46,13 @@ public class NutritionixController {
 		try {
 			Map<String, String> userInfo = (Map<String, String>) authClient.validateToken(token).getBody();
 			if (userInfo.containsValue("ROLE_ADMIN") || userInfo.containsValue("ROLE_CUSTOMER")) {
+				LOGGER.info("Inside: NutritionixController.getCommonFoodItems");
 				return nutritionixService.getCommonFoodItems(query);
 			} else {
 				throw new InvalidCredentialsException("Access Denied");
 			}
 		} catch (FeignException e) {
+			LOGGER.error("Inside: NutritionixController.getCommonFoodItems { }", e.getMessage());
 			throw new ExternalServiceException(e.getMessage());
 		}
 	}
@@ -58,11 +64,13 @@ public class NutritionixController {
 		try {
 			Map<String, String> userInfo = (Map<String, String>) authClient.validateToken(token).getBody();
 			if (userInfo.containsValue("ROLE_ADMIN") || userInfo.containsValue("ROLE_CUSTOMER")) {
+				LOGGER.info("Inside: NutritionixController.getFoodNutritions");
 				return nutritionixService.getFoodNutritions(foodName);
 			} else {
 				throw new InvalidCredentialsException("Access Denied");
 			}
 		} catch (FeignException e) {
+			LOGGER.error("Inside: NutritionixController.getFoodNutritions { }", e.getMessage());
 			throw new ExternalServiceException(e.getMessage());
 		}
 	}
