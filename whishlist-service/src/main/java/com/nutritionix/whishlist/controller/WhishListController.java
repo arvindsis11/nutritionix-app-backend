@@ -2,6 +2,8 @@ package com.nutritionix.whishlist.controller;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,8 @@ public class WhishListController {
 
 	@Autowired
 	AuthClient authClient;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(WhishListController.class);
 
 	@GetMapping("/getByUserId/{userId}")
 	@Operation(summary = "get whishlist by userId")
@@ -42,11 +46,13 @@ public class WhishListController {
 		try {
 			Map<String, String> userInfo = (Map<String, String>) authClient.validateToken(token).getBody();
 			if (userInfo.containsValue("ROLE_ADMIN") || userInfo.containsValue("ROLE_CUSTOMER")) {
+				LOGGER.info("Inside: WhishListController.getWhishlistByUserId");
 				return new ResponseEntity<>(whishListService.getWhishlistByUserId(userId), HttpStatus.OK);
 			} else {
 				throw new InvalidCredentialsException("Access Denied");
 			}
 		} catch (FeignException e) {
+			LOGGER.error("Inside: WhishListController.getWhishlistByUserId { }", e.getMessage());
 			throw new ExternalServiceException(e.getMessage());
 		}
 	}
@@ -61,11 +67,13 @@ public class WhishListController {
 				String userId = userInfo.keySet().iterator().next();
 				System.out.println("userIdv " + userId);
 				whishlist.setUserId(userId);
+				LOGGER.info("Inside: WhishListController.addFoodItemToWhishlist");
 				return new ResponseEntity<>(whishListService.addFoodItemToWhishlist(whishlist), HttpStatus.OK);
 			} else {
 				throw new InvalidCredentialsException("Access Denied");
 			}
 		} catch (FeignException e) {
+			LOGGER.error("Inside: WhishListController.addFoodItemToWhishlist { }", e.getMessage());
 			throw new ExternalServiceException(e.getMessage());
 		}
 	}
@@ -78,11 +86,13 @@ public class WhishListController {
 			Map<String, String> userInfo = (Map<String, String>) authClient.validateToken(token).getBody();
 			if (userInfo.containsValue("ROLE_ADMIN") || userInfo.containsValue("ROLE_CUSTOMER")) {
 				String userId = userInfo.keySet().iterator().next();
+				LOGGER.info("Inside: WhishListController.deleteFromWhishList");
 				return new ResponseEntity<>(whishListService.deleteFromWhishList(id,userId), HttpStatus.OK);
 			} else {
 				throw new InvalidCredentialsException("Access Denied");
 			}
 		} catch (FeignException e) {
+			LOGGER.error("Inside: WhishListController.deleteFromWhishList { }", e.getMessage());
 			throw new ExternalServiceException(e.getMessage());
 		}
 	}

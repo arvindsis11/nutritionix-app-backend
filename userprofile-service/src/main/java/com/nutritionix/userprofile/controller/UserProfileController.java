@@ -1,5 +1,7 @@
 package com.nutritionix.userprofile.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ public class UserProfileController {
 	private final UserProfileService usersProfileService;
 	
 	private final JsonKafkaProducer jsonKafkaProducer;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserProfileController.class);
 
 	@Autowired
 	public UserProfileController(UserProfileService userProfileService,JsonKafkaProducer jsonKafkaProducer) {
@@ -44,16 +48,19 @@ public class UserProfileController {
 	public ResponseEntity<Object> saveUserProfile(@RequestBody UserProfile userProfile) {
 		//sending registeration data to authentication server using kafka --comment me if kafka gives issues
 //		jsonKafkaProducer.sendMessage(userProfile);
+		LOGGER.info("Inside: UserProfileController.saveUserProfile");
 		return new ResponseEntity<>(usersProfileService.saveUserProfile(userProfile), HttpStatus.OK);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateUserProfile(@RequestBody UserProfileDto userProfileDto, @PathVariable long id) {
+		LOGGER.info("Inside: UserProfileController.updateUserProfile");
 		return new ResponseEntity<>(usersProfileService.updateUserProfile(userProfileDto, id), HttpStatus.OK);
 	}
 	
 	@GetMapping("/getProfile/{username}")
 	public ResponseEntity<Object> getUserProfileByName(@PathVariable String username) {
+		LOGGER.info("Inside: UserProfileController.getUserByUsername");
 		return new ResponseEntity<>(usersProfileService.getUserByUsername(username), HttpStatus.OK);
 	}
 }

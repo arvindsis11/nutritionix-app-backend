@@ -1,5 +1,7 @@
 package com.nutritionix.app.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -31,6 +33,8 @@ public class NutritionixServiceImpl implements NutritionixService {
 	private String appKey;
 
 	private final RestTemplate restTemplate;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(NutritionixServiceImpl.class);
 
 	@Autowired
 	public NutritionixServiceImpl(RestTemplate restTemplate) {
@@ -73,6 +77,7 @@ public class NutritionixServiceImpl implements NutritionixService {
 		ResponseEntity<FullNutritionResponse> responseEntity = restTemplate.exchange(url, HttpMethod.POST,
 				requestEntity, FullNutritionResponse.class);
 
+		LOGGER.info("Inside: NutritionixServiceImpl.getFoodNutritions");
 		return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
 	}
 	

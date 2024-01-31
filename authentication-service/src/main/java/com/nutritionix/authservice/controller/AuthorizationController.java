@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,12 +40,16 @@ public class AuthorizationController {
 	@Autowired
 	JwtTokenUtil jwtTokenUtil;
 
-	//backup endpoint for user registeration in case kafka fails
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationController.class);
+
+	// backup endpoint for user registeration in case kafka fails
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@RequestBody SignupDto signUpRequest) {
 		try {
+			LOGGER.info("Inside: AuthorizationController.addUser");
 			return userService.addUser(signUpRequest);
 		} catch (InvalidInputException e) {
+			LOGGER.error("Inside: AuthorizationController.addUser { }", e.getMessage());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
@@ -51,6 +57,7 @@ public class AuthorizationController {
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody LoginDto loginRequest) throws InvalidInputException {
 		try {
+			LOGGER.info("Inside: AuthorizationController.loginUser");
 			String jwtToken = jwtTokenUtil.generatToken(loginRequest);
 			Optional<User> userDetails = userService.getUserByUsername(loginRequest.getUsername());// fetch the user
 			if (userDetails.isPresent()) {
@@ -60,6 +67,7 @@ public class AuthorizationController {
 				throw new InvalidInputException("Invalid Credentials");
 			}
 		} catch (InvalidInputException e) {
+			LOGGER.error("Inside: AuthorizationController.loginUser { }", e.getMessage());
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
 		}
 	}
@@ -98,7 +106,8 @@ public class AuthorizationController {
 	}
 
 	@DeleteMapping("/deleteUser")
-	public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String token,@RequestParam("userId") Long userId) {
+	public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String token,
+			@RequestParam("userId") Long userId) {
 		Map<String, String> responseObj = new HashMap<>();
 		responseObj.put("msg", "access denied");
 		String authToken = token.substring(7);

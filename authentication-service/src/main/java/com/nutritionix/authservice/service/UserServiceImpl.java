@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +35,15 @@ public class UserServiceImpl implements UserService {
 	private RoleRepository roleRepository;
 
 	Map<String, String> mapObj = new HashMap<>();
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
 	public ResponseEntity<?> addUser(SignupDto signupDto) {
 		if (userRepository.existsByUsername(signupDto.getUsername())
 				|| userRepository.existsByEmail(signupDto.getEmail())) {
 			mapObj.put("msg", "Username or email is already exists!");
+			LOGGER.warn("Username or email is already exists!");
 			return new ResponseEntity<>(mapObj, HttpStatus.BAD_REQUEST);
 		}
 		User user = new User(signupDto.getUsername(), signupDto.getEmail(), signupDto.getPassword(),
@@ -69,6 +74,7 @@ public class UserServiceImpl implements UserService {
 
 		user.setRoles(roles);
 		userRepository.save(user);
+		LOGGER.info("User registered successfully");
 		mapObj.put("msg", "User registered successfully");
 		return new ResponseEntity<>(mapObj, HttpStatus.OK);
 	}
@@ -88,6 +94,7 @@ public class UserServiceImpl implements UserService {
 
 		if (!userRepository.existsByUsername(resetDto.getUsername())) {
 			mapObj.put("msg", "Username doesn't exists!");
+			LOGGER.warn("Username doesn't exists!");
 			return new ResponseEntity<>(mapObj, HttpStatus.BAD_REQUEST);
 		}
 		Optional<User> userdata = userRepository.findByUsername(resetDto.getUsername());
@@ -96,6 +103,7 @@ public class UserServiceImpl implements UserService {
 			userdata.get().setPassword(resetDto.getNewPassword());
 			userRepository.save(userdata.get());
 			mapObj.put("msg", "changed password successfully!");
+			LOGGER.info("Changed password successfully!");
 			return new ResponseEntity<>(mapObj, HttpStatus.OK);
 		}
 		mapObj.put("msg", "could not update password(cause:sec ques not match)!");

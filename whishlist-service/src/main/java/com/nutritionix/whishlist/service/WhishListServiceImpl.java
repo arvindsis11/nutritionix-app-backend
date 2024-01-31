@@ -1,10 +1,10 @@
 package com.nutritionix.whishlist.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,6 +25,8 @@ public class WhishListServiceImpl implements WhishListService {
 
 	@Autowired
 	WhishListRepo whishListRepo;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(WhishListServiceImpl.class);
 
 	@Override
 	@Cacheable(value = "whishlistCache", key = "#userId")
@@ -37,8 +39,10 @@ public class WhishListServiceImpl implements WhishListService {
 	@CircuitBreaker(name = "WHISHLIST-SERVICE", fallbackMethod = "getFallbackResponse")
 	public ResponseEntity<?> addFoodItemToWhishlist(WhishList whishlist) {
 		if (whishListRepo.existsByTagId(whishlist.getTagId())) {
+			LOGGER.warn("item in whishlist already exists");
 			throw new ResourceAlreadyExistsException("item in whishlist already exists");
 		}
+		LOGGER.info("Item added in wishlist sucessfully");
 		return new ResponseEntity<>(whishListRepo.save(whishlist), HttpStatus.CREATED);
 	}
 
@@ -47,9 +51,11 @@ public class WhishListServiceImpl implements WhishListService {
 	public ResponseEntity<?> deleteFromWhishList(Long id,String userId) {
 		Optional<WhishList> whishlist = whishListRepo.findById(id);
 		if (whishlist.isEmpty()) {
+			LOGGER.warn("item with given id not found");
 			throw new ResourceNotFoundException("item with given id not found");
 		}
 		whishListRepo.deleteById(id);
+		LOGGER.info("Item deleted in wishlist sucessfully");
 		return new ResponseEntity<>("item deleted successfully", HttpStatus.OK);
 	}
 	
